@@ -20,7 +20,7 @@ type numbers struct {
 	magnitude   int
 }
 
-func newNumbers(bits BitArray, perNumber, count, magnitude int) Numbers {
+func NewNumbers(bits BitArray, perNumber, count, magnitude int) Numbers {
 	nums := &numbers{
 		bits:      bits,
 		perNumber: perNumber,

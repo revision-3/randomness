@@ -215,7 +215,7 @@ func (b *randomness) Numbers(count, magnitude int) Numbers {
 	perNumber, bytesNeeded := numbersNeeds(count, magnitude)
 	bits := b.Bits(bytesNeeded * 8)
 
-	return newNumbers(bits, perNumber, count, magnitude)
+	return NewNumbers(bits, perNumber, count, magnitude)
 }
 
 // numbersNeeds returns the number of bits per number and maximum total bytes
