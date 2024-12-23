@@ -1,3 +1,4 @@
+// Version 1.0.0
 package randomness
 
 type BitArray []bool

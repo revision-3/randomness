@@ -1,4 +1,4 @@
-// Version
+// Version 1.0.0
 package randomness
 
 import (

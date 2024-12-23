@@ -1,3 +1,4 @@
+// Version 1.0.0
 package randomness
 
 // Numbers allows reading a fixed number of unique random numbers in a
