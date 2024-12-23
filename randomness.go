@@ -115,7 +115,7 @@ func (b *randomness) amplify() {
 }
 
 func (b *randomness) Probability() float64 {
-	p, _ := u64ToProbability(b.Uint64()).Float64()
+	p, _ := U64ToProbability(b.Uint64()).Float64()
 	return p
 }
 
@@ -274,7 +274,7 @@ func TestStringForValue(vals ...any) string {
 var bigMaxUint64 = big.NewFloat(float64(math.MaxUint64))
 var bigSmallestNonzeroFloat64 = big.NewFloat(math.SmallestNonzeroFloat64)
 
-func u64ToProbability(u uint64) *big.Float {
+func U64ToProbability(u uint64) *big.Float {
 	// Convert the uint64 to a float in the range [0.0, 1.0).
 	p := new(big.Float)
 	p.SetUint64(u)
