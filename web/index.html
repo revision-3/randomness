@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Randomness Examples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: left;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: left;
+        }
+        .input-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: left;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            height: 400px;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .result .operation {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .result .operation:last-child {
+            border-bottom: none;
+        }
+        .result .operation .timestamp {
+            color: #666;
+        }
+        .result .operation .content {
+            display: inline;
+            text-align: left;
+        }
+        .operation {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .operation:last-child {
+            border-bottom: none;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 5px;
+            text-align: left;
+        }
+        .success {
+            color: #28a745;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: left;
+        }
+        .status.active {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .status.inactive {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .numeric-type {
+            display: inline-block;
+            margin: 5px;
+            text-align: left;
+        }
+        .numeric-count {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .numeric-count input {
+            width: 80px;
+            text-align: left;
+        }
+        .numeric-group {
+            display: inline-flex;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .numeric-group button {
+            padding: 2px 4px;
+            font-size: 12px;
+            min-width: 65px;
+            border-radius: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+        .numeric-group button:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        .numeric-group button:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-right: none;
+        }
+        .numeric-group button:hover {
+            background-color: #45a049;
+        }
+        .numeric-group button:disabled {
+            background-color: #cccccc;
+            color: white;
+            cursor: not-allowed;
+        }
+        .precise-number {
+            font-family: monospace;
+            text-align: left;
+        }
+        .precise-number i {
+            display: inline-block;
+            padding: 0 1px;
+            font-style: normal;
+            white-space: nowrap;
+            text-align: left;
+        }
+        .precise-number i:first-child {
+            padding-left: 0;
+        }
+        .precise-number i:last-child {
+            padding-right: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Randomness Examples</h1>
+        
+        <div class="section">
+            <h2>Randomness Instance</h2>
+            <div class="input-group">
+                <label for="entropy">Entropy String:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="entropy" value="test-entropy" style="flex: 1;">
+                    <button onclick="generateRandomSeed()" style="white-space: nowrap;">Generate Seed</button>
+                </div>
+            </div>
+            <button onclick="createRandomness()" id="createBtn">Create Randomness Instance</button>
+            <div id="instanceStatus" class="status inactive">No active Randomness instance</div>
+            <div id="operationLog" class="result"></div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button onclick="clearResults()" class="randomness-btn">Clear Results</button>
+                <button onclick="getVersion()" class="randomness-btn">Get Version</button>
+                <button onclick="getMemStats()" class="randomness-btn">Get Memory Stats</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Numeric Examples</h2>
+            <div class="numeric-count">
+                <label for="numericCount">Number of Examples:</label>
+                <input type="number" id="numericCount" value="1" min="1" max="20">
+            </div>
+            <div class="numeric-group">
+                <button onclick="generateProbability()" class="randomness-btn" id="probabilityBtn" disabled>probability</button>
+                <button onclick="generateUint64()" class="randomness-btn" id="uint64Btn" disabled>uint64</button>
+                <button onclick="generateInt64()" class="randomness-btn" id="int64Btn" disabled>int64</button>
+                <button onclick="generateUint32()" class="randomness-btn" id="uint32Btn" disabled>uint32</button>
+                <button onclick="generateInt32()" class="randomness-btn" id="int32Btn" disabled>int32</button>
+                <button onclick="generateUint16()" class="randomness-btn" id="uint16Btn" disabled>uint16</button>
+                <button onclick="generateInt16()" class="randomness-btn" id="int16Btn" disabled>int16</button>
+                <button onclick="generateUint8()" class="randomness-btn" id="uint8Btn" disabled>uint8</button>
+                <button onclick="generateInt8()" class="randomness-btn" id="int8Btn" disabled>int8</button>
+                <button onclick="generateFloat64()" class="randomness-btn" id="float64Btn" disabled>float64</button>
+                <button onclick="generateFloat32()" class="randomness-btn" id="float32Btn" disabled>float32</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Bits Example</h2>
+            <div class="input-group">
+                <label for="bitsCount">Bits per Example:</label>
+                <input type="number" id="bitsCount" value="8" min="1" max="64">
+            </div>
+            <div class="input-group">
+                <label for="bitsExampleCount">Number of Examples:</label>
+                <input type="number" id="bitsExampleCount" value="1" min="1" max="20">
+            </div>
+            <button onclick="generateBits()" class="randomness-btn" id="bitsExampleBtn" disabled>Run Bits Examples</button>
+        </div>
+
+        <div class="section">
+            <h2>Bytes Example</h2>
+            <div class="input-group">
+                <label for="bytesCount">Bytes per Example:</label>
+                <input type="number" id="bytesCount" value="16" min="1" max="256">
+            </div>
+            <div class="input-group">
+                <label for="bytesExampleCount">Number of Examples:</label>
+                <input type="number" id="bytesExampleCount" value="1" min="1" max="20">
+            </div>
+            <button onclick="generateBytes()" class="randomness-btn" id="bytesExampleBtn" disabled>Run Bytes Examples</button>
+        </div>
+
+        <div class="section">
+            <h2>Selection Examples</h2>
+            <div class="input-group">
+                <label for="itemList">Items (one per line, format: value[,weight[,supply]]):</label>
+                <textarea id="itemList" rows="5" style="width: 100%; font-family: monospace;">apple,1.0,2
+banana,1.0,3
+orange,1.5,-1
+grape,0.5,4
+kiwi,1.0,2</textarea>
+                <div class="help-text" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                    Format: value[,weight[,supply]]<br>
+                    - value: required, the item's value<br>
+                    - weight: optional, defaults to 1.0<br>
+                    - supply: optional, defaults to -1 (infinite)
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="selectCount">Items to Select:</label>
+                <input type="number" id="selectCount" value="1" min="1" max="10">
+            </div>
+            <div class="input-group">
+                <label for="selectionExampleCount">Number of Examples:</label>
+                <input type="number" id="selectionExampleCount" value="1" min="1" max="20">
+            </div>
+            <button onclick="generateSelection()" class="randomness-btn" id="selectionExampleBtn" disabled>Run Selection Examples</button>
+        </div>
+
+        <div class="section">
+            <h2>Pick Examples</h2>
+            <div class="input-group">
+                <label for="pickCount">Number to Pick:</label>
+                <input type="number" id="pickCount" value="1" min="1" max="10">
+            </div>
+            <div class="input-group">
+                <label for="pickMagnitude">Magnitude (range [0, magnitude)):</label>
+                <input type="number" id="pickMagnitude" value="10" min="1" max="1000">
+            </div>
+            <div class="input-group">
+                <label for="pickExampleCount">Number of Examples:</label>
+                <input type="number" id="pickExampleCount" value="1" min="1" max="20">
+            </div>
+            <button onclick="generatePickDistinct()" class="randomness-btn" id="pickDistinctExampleBtn" disabled>Run PickDistinct Examples</button>
+            <button onclick="generatePick()" class="randomness-btn" id="pickExampleBtn" disabled>Run Pick Examples</button>
+        </div>
+    </div>
+
+    <script src="wasm_exec.js"></script>
+    <script>
+        let randomness = null;
+        const instanceStatus = document.getElementById('instanceStatus');
+        const operationLog = document.getElementById('operationLog');
+
+        function generateRandomSeed() {
+            const array = new Uint8Array(32); // 32 bytes = 64 hex characters
+            crypto.getRandomValues(array);
+            const seed = Array.from(array)
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+            document.getElementById('entropy').value = seed;
+        }
+
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("wasm.wasm"), go.importObject).then((result) => {
+            go.run(result.instance);
+            console.log("WASM loaded successfully");
+            // Generate initial random seed
+            generateRandomSeed();
+            // Initialize button states after WASM is loaded
+            updateButtonStates();
+        }).catch((err) => {
+            console.error("Error loading WASM:", err);
+        });
+
+        function updateButtonStates() {
+            console.log("Updating button states, randomness:", randomness);
+            const buttons = document.getElementsByClassName("randomness-btn");
+            console.log("Found buttons:", buttons.length);
+            for (const button of buttons) {
+                button.disabled = !randomness;
+                console.log(`Button ${button.id} disabled:`, button.disabled);
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        class HtmlOutput {
+            constructor(html) {
+                this.html = html;
+            }
+        }
+
+        function logOperation(...parts) {
+            const timestamp = new Date().toLocaleTimeString();
+            const operationElement = document.createElement('div');
+            operationElement.className = 'operation';
+            
+            // Split the operation into timestamp and content
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'timestamp';
+            timestampSpan.textContent = `[${timestamp}] `;
+            
+            const contentSpan = document.createElement('span');
+            contentSpan.className = 'content';
+            
+            // Process each part
+            parts.forEach(part => {
+                if (part instanceof HtmlOutput) {
+                    // For HTML content, parse it safely
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = part.html;
+                    contentSpan.appendChild(tempDiv);
+                } else if (typeof part === 'object' && part !== null) {
+                    // For objects, JSON encode them
+                    contentSpan.appendChild(document.createTextNode(JSON.stringify(part, null, 2)));
+                } else {
+                    // For plain text, escape it
+                    contentSpan.appendChild(document.createTextNode(part));
+                }
+            });
+            
+            operationElement.appendChild(timestampSpan);
+            operationElement.appendChild(contentSpan);
+            operationLog.insertBefore(operationElement, operationLog.firstChild);
+        }
+
+        function createRandomness() {
+            const entropy = document.getElementById("entropy").value;
+            try {
+                console.log("Creating Randomness instance with entropy:", entropy);
+                const result = Randomness(entropy);
+                if (result.err) {
+                    console.error("Error creating Randomness instance:", result.err);
+                    instanceStatus.textContent = `Error: ${result.err}`;
+                    instanceStatus.className = 'status inactive';
+                    randomness = null;
+                    updateButtonStates();
+                    return;
+                }
+                randomness = result;
+                console.log("Randomness instance created successfully:", randomness);
+                updateButtonStates();
+                operationLog.innerHTML = ''; // Clear the operation log
+                logOperation(`Created new Randomness instance with entropy: ${entropy}`);
+                instanceStatus.textContent = 'Active Randomness instance';
+                instanceStatus.className = 'status active';
+            } catch (error) {
+                console.error("Error creating Randomness instance:", error);
+                instanceStatus.textContent = `Error: ${error.message}`;
+                instanceStatus.className = 'status inactive';
+                randomness = null;
+                updateButtonStates();
+            }
+        }
+
+        function formatPreciseNumber(num) {
+            if (num === null) {
+                return 'null';
+            }
+
+            if (typeof num === 'string') {
+                return num;
+            }
+            if (typeof num === 'number') {
+                const numStr = num.toString();
+                if (numStr.includes('e')) {
+                    const [base, exponent] = numStr.split('e');
+                    const exp = parseInt(exponent);
+                    const isNegative = base.startsWith('-');
+                    const baseWithoutSign = isNegative ? base.substring(1) : base;
+                    const [whole, decimal] = baseWithoutSign.split('.');
+                    
+                    if (exp > 0) {
+                        // For large numbers, add zeros after the decimal point
+                        const fullNum = (isNegative ? '-' : '') + baseWithoutSign.replace('.', '') + '0'.repeat(exp);
+                        return formatGroupedDigits(fullNum);
+                    } else {
+                        // For small numbers, add leading zeros before the decimal point
+                        const zeros = '0'.repeat(Math.abs(exp) - 1); // Subtract 1 because we already have one zero after the decimal
+                        const fullNum = (isNegative ? '-' : '') + `0.${zeros}${baseWithoutSign.replace('.', '')}`;
+                        return formatGroupedDigits(fullNum);
+                    }
+                }
+                return formatGroupedDigits(numStr);
+            }
+            return num.toString();
+        }
+
+        function formatGroupedDigits(numStr) {
+            // Handle negative numbers
+            const isNegative = numStr.startsWith('-');
+            if (isNegative) {
+                numStr = numStr.substring(1);
+            }
+
+            const parts = numStr.split('.');
+            const whole = parts[0];
+            const decimal = parts[1] || '';
+            
+            // Group whole number part in threes from the right
+            const wholeGroups = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' ').split(' ');
+            
+            // Group decimal part in threes from the left
+            const decimalGroups = decimal.match(/.{1,3}/g) || [];
+            
+            // Wrap each group in <i> tags
+            const wholeDigits = wholeGroups.map(group => 
+                `<i>${group}</i>`
+            ).join('');
+            
+            const decimalDigits = decimalGroups.map(group => 
+                `<i>${group}</i>`
+            ).join('');
+            
+            return `<span class="precise-number">${isNegative ? '-' : ''}${wholeDigits}${decimal ? '.' : ''}${decimal ? `${decimalDigits}` : ''}</span>`;
+        }
+
+        function formatNumber(num) {
+            console.log('formatNumber input:', num, 'type:', typeof num);
+            if (typeof num === 'string') {
+                console.log('formatNumber: handling string input');
+                return num;
+            }
+            if (typeof num === 'number') {
+                console.log('formatNumber: handling number input');
+                // For floating point numbers, show full precision without exponential notation
+                const numStr = num.toString();
+                console.log('formatNumber: number to string:', numStr);
+                
+                // Check for exponential notation first
+                if (numStr.includes('e')) {
+                    console.log('formatNumber: found exponential notation');
+                    const [base, exponent] = numStr.split('e');
+                    const exp = parseInt(exponent);
+                    console.log('formatNumber: base:', base, 'exponent:', exp);
+                    const [whole, decimal] = base.split('.');
+                    const decimalPlaces = decimal ? decimal.length : 0;
+                    
+                    if (exp > 0) {
+                        // For large numbers, add zeros after the decimal point
+                        const result = base.replace('.', '') + '0'.repeat(exp);
+                        console.log('formatNumber: large number result:', result);
+                        return result;
+                    } else {
+                        // For small numbers, add leading zeros before the decimal point
+                        const zeros = '0'.repeat(Math.abs(exp));
+                        const result = `0.${zeros}${base.replace('.', '')}`;
+                        console.log('formatNumber: small number result:', result);
+                        return result;
+                    }
+                }
+                
+                // Handle regular numbers
+                if (Number.isInteger(num)) {
+                    console.log('formatNumber: handling integer');
+                    return num.toString();
+                }
+                
+                console.log('formatNumber: no exponential notation, returning:', numStr);
+                return numStr;
+            }
+            console.log('formatNumber: default case, converting to string');
+            return num.toString();
+        }
+
+        function formatArray(arr) {
+            return arr.map(formatNumber).join(", ");
+        }
+
+        function formatBytes(bytes) {
+            return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join(" ");
+        }
+
+        function generateProbability() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.probability();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`Probability ${i + 1}: ${formatNumber(result.value)}`);
+            }
+        }
+
+        function generateUint64() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.uint64();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Uint64 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateInt64() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.int64();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Int64 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateUint32() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.uint32();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Uint32 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateInt32() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.int32();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Int32 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateUint16() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.uint16();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Uint16 ${i + 1}: `, result?.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateInt16() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.int16();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Int16 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateUint8() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.uint8();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Uint8 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateInt8() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.int8();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Int8 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateFloat64() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.float64();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Float64 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateFloat32() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("numericCount").value);
+            for (let i = 0; i < count; i++) {
+                const result = randomness.float32();
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                const formatted = formatPreciseNumber(result.value);
+                logOperation(`Float32 ${i + 1}: `, result.value, new HtmlOutput(formatted));
+            }
+        }
+
+        function generateBits() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("bitsCount").value);
+            const exampleCount = parseInt(document.getElementById("bitsExampleCount").value);
+            for (let i = 0; i < exampleCount; i++) {
+                const result = randomness.bits(count);
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`Bits ${i + 1}: `, result.value, new HtmlOutput(formatBits(result.value)));
+            }
+        }
+
+        function formatBits(bits) {
+            return Array.from(bits).map(b => b ? '1' : '0').join(" ");
+        }
+
+        function generateBytes() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const count = parseInt(document.getElementById("bytesCount").value);
+            const exampleCount = parseInt(document.getElementById("bytesExampleCount").value);
+            for (let i = 0; i < exampleCount; i++) {
+                const result = randomness.bytes(count);
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`Bytes ${i + 1}: `, formatBytes(result.value), new HtmlOutput(formatBytes(result.value)));
+            }
+        }
+
+        function generateSelection() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const itemListText = document.getElementById("itemList").value;
+            const selectCount = parseInt(document.getElementById("selectCount").value);
+            const exampleCount = parseInt(document.getElementById("selectionExampleCount").value);
+            
+            // Parse items from textarea
+            const items = itemListText.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .map(line => {
+                    const parts = line.split(',').map(p => p.trim());
+                    const item = {
+                        value: parts[0],
+                        weight: parts.length > 1 ? parseFloat(parts[1]) : 1.0,
+                        supply: parts.length > 2 ? parseInt(parts[2]) : -1
+                    };
+                    return item;
+                });
+
+            if (items.length === 0) {
+                logOperation('Error: No items provided');
+                return;
+            }
+
+            for (let i = 0; i < exampleCount; i++) {
+                const result = randomness.selection(items, selectCount);
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`Selection ${i + 1}: `, new HtmlOutput(formatSelection(result.value)));
+            }
+        }
+
+        function formatSelection(selection) {
+            return selection.map(item => `${item.value} #${item.instance} (weight: ${item.weight}, supply: ${item.supply})`).join('\n');
+        }
+
+        function generatePickDistinct() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const pickCount = parseInt(document.getElementById("pickCount").value);
+            const magnitude = parseInt(document.getElementById("pickMagnitude").value);
+            const exampleCount = parseInt(document.getElementById("pickExampleCount").value);
+            for (let i = 0; i < exampleCount; i++) {
+                const result = randomness.pickDistinct(pickCount, magnitude);
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`PickDistinct ${i + 1}: `, result.value, new HtmlOutput(formatPickDistinct(result.value)));
+            }
+        }
+
+        function formatPickDistinct(pick) {
+            return pick.map(p => p.join(", ")).join("\n");
+        }
+
+        function generatePick() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const pickCount = parseInt(document.getElementById("pickCount").value);
+            const magnitude = parseInt(document.getElementById("pickMagnitude").value);
+            const exampleCount = parseInt(document.getElementById("pickExampleCount").value);
+            for (let i = 0; i < exampleCount; i++) {
+                const result = randomness.pick(pickCount, magnitude);
+                if (result.err) {
+                    logOperation(`Error: ${result.err}`);
+                    return;
+                }
+                logOperation(`Pick ${i + 1}: `, result.value, new HtmlOutput(formatPick(result.value)));
+            }
+        }
+
+        function formatPick(pick) {
+            return pick.map(p => p.join(", ")).join("\n");
+        }
+
+        function getVersion() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            logOperation(new HtmlOutput(`<div style="text-align: left;">Version: ${randomness.version}</div>`));
+        }
+
+        function getMemStats() {
+            if (!randomness) {
+                console.error("No Randomness instance available");
+                return;
+            }
+            const stats = randomness.memStats();
+            if (stats.err) {
+                logOperation(`Error: ${stats.err}`);
+                return;
+            }
+            const formattedStats = {
+                "Allocated Memory": `${(stats.value.alloc / 1024).toFixed(2)} KB`,
+                "Total Allocated": `${(stats.value.totalAlloc / 1024).toFixed(2)} KB`,
+                "System Memory": `${(stats.value.sys / 1024).toFixed(2)} KB`,
+                "Heap Allocated": `${(stats.value.heapAlloc / 1024).toFixed(2)} KB`,
+                "Heap System": `${(stats.value.heapSys / 1024).toFixed(2)} KB`,
+                "Heap Idle": `${(stats.value.heapIdle / 1024).toFixed(2)} KB`,
+                "Heap In Use": `${(stats.value.heapInuse / 1024).toFixed(2)} KB`,
+                "Heap Released": `${(stats.value.heapReleased / 1024).toFixed(2)} KB`,
+                "Total Mallocs": stats.value.mallocs,
+                "Total Frees": stats.value.frees,
+                "GC System": `${(stats.value.gcSys / 1024).toFixed(2)} KB`
+            };
+            logOperation(new HtmlOutput(`<div style="text-align: left;">Memory Statistics:<pre style="text-align: left; margin: 0;">${JSON.stringify(formattedStats, null, 2)}</pre></div>`));
+        }
+    </script>
+</body>
+</html>

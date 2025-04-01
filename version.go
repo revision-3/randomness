@@ -1,4 +1,3 @@
-// Version 1.0.0
 package randomness
 
 const Name = "randomness"
