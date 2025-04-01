@@ -1,3 +1,19 @@
 .*
 !.gitignore
 !.github
+
+# WebAssembly files
+*.wasm
+wasm_exec.js
+
+# Release directory
+release/
+
+# Go specific
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out

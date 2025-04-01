@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.1'
+
+      - name: Set up TinyGo
+        uses: acifani/setup-tinygo@v2
+        with:
+          tinygo-version: '0.37.0'
+          install-binaryen: 'true'
+
+      - name: Install GPG
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg
+
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import
+          gpg --list-secret-keys
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Run release script
+        id: release
+        run: ./contrib/release.sh
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ steps.release.outputs.release_dir }}/randomness.wasm
+            ${{ steps.release.outputs.release_dir }}/wasm_exec.js
+            ${{ steps.release.outputs.release_dir }}/checksums.txt
+            ${{ steps.release.outputs.release_dir }}/randomness.wasm.asc
+            ${{ steps.release.outputs.release_dir }}/wasm_exec.js.asc
+          body_path: ${{ steps.release.outputs.release_dir }}/release_notes.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
