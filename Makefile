@@ -2,7 +2,7 @@
 
 # Build WASM binary
 wasm-build:
-	tinygo build -o web/wasm.wasm -target wasm --no-debug web/main.go
+	tinygo build -o web/randomness.wasm -target wasm --no-debug web/main.go
 	cp $(shell tinygo env TINYGOROOT)/targets/wasm_exec.js web/
 
 # Serve the web directory
@@ -11,7 +11,7 @@ serve:
 
 # Clean build artifacts
 clean:
-	rm -f web/wasm.wasm web/wasm_exec.js
+	rm -f web/randomness.wasm web/wasm_exec.js
 
 # Release a new version
 release:

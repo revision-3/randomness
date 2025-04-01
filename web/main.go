@@ -181,6 +181,7 @@ func NewRandomness(this js.Value, args []js.Value) any {
 	// Create a JavaScript object with all the methods
 	lib := Result{}
 
+	lib["name"] = js.ValueOf(randomness.Name)
 	lib["version"] = js.ValueOf(randomness.Version)
 
 	lib["memStats"] = js.FuncOf(func(this js.Value, args []js.Value) any {

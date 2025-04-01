@@ -327,7 +327,7 @@ kiwi,1.0,2</textarea>
         }
 
         const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("wasm.wasm"), go.importObject).then((result) => {
+        WebAssembly.instantiateStreaming(fetch("randomness.wasm"), go.importObject).then((result) => {
             go.run(result.instance);
             console.log("WASM loaded successfully");
             // Generate initial random seed
@@ -859,7 +859,7 @@ kiwi,1.0,2</textarea>
                 console.error("No Randomness instance available");
                 return;
             }
-            logOperation(new HtmlOutput(`<div style="text-align: left;">Version: ${randomness.version}</div>`));
+            logOperation(new HtmlOutput(`<div style="text-align: left;">Version: ${randomness.name} ${randomness.version}</div>`));
         }
 
         function getMemStats() {

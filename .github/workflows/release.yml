@@ -57,6 +57,9 @@ jobs:
             ${{ steps.release.outputs.release_dir }}/checksums.txt
             ${{ steps.release.outputs.release_dir }}/randomness.wasm.asc
             ${{ steps.release.outputs.release_dir }}/wasm_exec.js.asc
+            web/README.md
+            web/index.html
+            pubkey.asc
           body_path: ${{ steps.release.outputs.release_dir }}/release_notes.md
           draft: false
           prerelease: false

@@ -140,4 +140,20 @@ for i := 0; i < bits.Length(); i++ {
 4. When selecting multiple items, use the `Selection()` method rather than multiple independent selections to ensure proper distribution.
 
 ## License
-This package is licensed solely to be used for the purpose of verifying the fairness of games. It may not be used in any other context or for any commercial purposes. See the LICENSE file for full details. 
+This package is licensed solely to be used for the purpose of verifying the fairness of games. It may not be used in any other context or for any commercial purposes. See the LICENSE file for full details.
+
+## Verifying Releases
+
+All releases are signed with GPG. To verify a release:
+
+1. Import the public key:
+   ```bash
+   gpg --import pubkey.asc
+   ```
+
+2. Verify a file's signature:
+   ```bash
+   gpg --verify file.asc file
+   ```
+
+The public key used for signing releases is available in `pubkey.asc` in this repository. 
