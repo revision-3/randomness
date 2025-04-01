@@ -35,10 +35,17 @@ func SingleItem() BaseItem {
 	}
 }
 
-func InfiniteItem() BaseItem {
+func InfiniteSingle() BaseItem {
 	return BaseItem{
 		weight: 1,
 		supply: -1,
+	}
+}
+
+func InfiniteItem(supply int) BaseItem {
+	return BaseItem{
+		weight: 1,
+		supply: -supply,
 	}
 }
 
