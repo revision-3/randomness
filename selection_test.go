@@ -75,18 +75,20 @@ func TestSelectInstances(t *testing.T) {
 		valueCounts := make(map[int]int)
 		instanceCounts := make(map[struct{ value, instance int }]int)
 
-		for i := 0; i < iterations; i++ {
-			// Create fresh items for each iteration to avoid state issues
-			items := []Item{
-				&testItem{value: 1, weight: 1.0, supply: 2},
-				&testItem{value: 2, weight: 1.0, supply: 2},
-			}
+		// Create items once for the entire test case
+		items := []Item{
+			&testItem{value: 1, weight: 1.0, supply: 2},
+			&testItem{value: 2, weight: 1.0, supply: 2},
+		}
 
-			// Use a better distribution of test values
-			// Scale i to use the full range of uint64 values
-			scaledValue := uint64(float64(i) / float64(iterations) * float64(math.MaxUint64))
-			r := NewRandomness(TestStringForValue(scaledValue))
-			results, err := r.Selection(SelectionConfig{Items: items, Count: 1})
+		// Create a single randomness instance for the test
+		r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+
+		// Create a single SelectionConfig for the test
+		config := SelectionConfig{Items: items, Count: 1}
+
+		for i := 0; i < iterations; i++ {
+			results, err := r.Selection(config)
 			if err != nil {
 				t.Fatalf("Selection() error = %v", err)
 			}
@@ -124,18 +126,20 @@ func TestSelectInstances(t *testing.T) {
 		valueCounts := make(map[int]int)
 		instanceCounts := make(map[struct{ value, instance int }]int)
 
-		for i := 0; i < iterations; i++ {
-			// Create fresh items for each iteration to avoid state issues
-			items := []Item{
-				&testItem{value: 1, weight: 1.0, supply: 2}, // 2 instances, weight 1.0 each
-				&testItem{value: 2, weight: 1.5, supply: 2}, // 2 instances, weight 1.5 each
-			}
+		// Create items once for the entire test case
+		items := []Item{
+			&testItem{value: 1, weight: 1.0, supply: 2}, // 2 instances, weight 1.0 each
+			&testItem{value: 2, weight: 1.5, supply: 2}, // 2 instances, weight 1.5 each
+		}
 
-			// Use a better distribution of test values
-			// Scale i to use the full range of uint64 values
-			scaledValue := uint64(float64(i) / float64(iterations) * float64(math.MaxUint64))
-			r := NewRandomness(TestStringForValue(scaledValue))
-			results, err := r.Selection(SelectionConfig{Items: items, Count: 1})
+		// Create a single randomness instance for the test
+		r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+
+		// Create a single SelectionConfig for the test
+		config := SelectionConfig{Items: items, Count: 1}
+
+		for i := 0; i < iterations; i++ {
+			results, err := r.Selection(config)
 			if err != nil {
 				t.Fatalf("Selection() error = %v", err)
 			}

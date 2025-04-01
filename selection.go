@@ -152,7 +152,7 @@ func (r *randomness) Selection(cfg SelectionConfig) ([]SelectionResult, error) {
 					break
 				}
 			} else if state.RemainingSupply > 0 {
-				// For finite supply items
+				// For finite supply items, calculate weight for each unused instance
 				for instance := 1; instance <= state.OriginalSupply; instance++ {
 					if !state.UsedInstances[instance] {
 						instanceWeight := state.Item.Weight() / totalWeight
@@ -169,20 +169,6 @@ func (r *randomness) Selection(cfg SelectionConfig) ([]SelectionResult, error) {
 				if selectedState != nil {
 					break
 				}
-			}
-		}
-
-		// Find the next available instance number for the selected item
-		if selectedState.IsConsumed {
-			selectedInstance = 0
-			for instance := 1; instance <= selectedState.OriginalSupply; instance++ {
-				if !selectedState.UsedInstances[instance] {
-					selectedInstance = instance
-					break
-				}
-			}
-			if selectedInstance == 0 {
-				return nil, fmt.Errorf("no available instances for selected item")
 			}
 		}
 
