@@ -19,7 +19,7 @@ func TestNumbersUniqueness(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a test randomness instance with known values
-			r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+			r := NewRandomness(BetaValues(GenerateTestRandomValue()))
 			generated, err := r.PickDistinct(tt.count, tt.magnitude)
 			if err != nil {
 				t.Errorf("PickDistinct(%d, %d) returned error: %v", tt.count, tt.magnitude, err)
@@ -64,7 +64,7 @@ func TestNumbersDistribution(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a test randomness instance with known values
-			r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+			r := NewRandomness(BetaValues(GenerateTestRandomValue()))
 			numbers, err := r.Numbers(tt.count, tt.magnitude)
 			if err != nil {
 				t.Errorf("Numbers(%d, %d) returned error: %v", tt.count, tt.magnitude, err)

@@ -35,9 +35,21 @@ type Randomness interface {
 To create a new Randomness instance:
 
 ```go
-r := NewRandomness(β string)
+// Create from a hex string
+entropy, err := BetaBytesFromHex("deadbeef")
+if err != nil {
+    // Handle error
+}
+r := NewRandomness(entropy)
+
+// Or use the convenience function for hex strings
+r := NewRandomness(MustBetaBytesFromHex("deadbeef"))
+
+// Or create from raw bytes
+r := NewRandomness(BetaBytes([]byte("raw bytes")))
 ```
-Where `β` is a string that serves as the initial entropy source. The implementation uses SHA-512 to amplify this entropy as needed.
+
+Where the entropy source is provided as `BetaBytes`. The implementation uses SHA-512 to amplify this entropy as needed.
 
 ## Usage Examples
 

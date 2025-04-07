@@ -121,7 +121,7 @@ func TestBitArray(t *testing.T) {
 func TestBits(t *testing.T) {
 	t.Run("Basic functionality", func(t *testing.T) {
 		// Test with a known value
-		r := NewRandomness(TestStringForValue(uint8(0xAA))) // 10101010 in binary
+		r := NewRandomness(BetaValues(uint8(0xAA))) // 10101010 in binary
 		bits, err := r.Bits(8)
 		if err != nil {
 			t.Errorf("Bits(8) returned error: %v", err)
@@ -146,7 +146,7 @@ func TestBits(t *testing.T) {
 		falseCount := 0
 
 		for i := 0; i < iterations; i++ {
-			r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+			r := NewRandomness(BetaValues(GenerateTestRandomValue()))
 			bits, err := r.Bits(bitCount)
 			if err != nil {
 				t.Errorf("Bits(8) returned error: %v", err)
@@ -180,7 +180,7 @@ func TestBits(t *testing.T) {
 	t.Run("Byte alignment", func(t *testing.T) {
 		// Test that Bits() reads whole bytes at a time
 		// Using two known bytes: 0xAA (10101010) and 0x55 (01010101)
-		r := NewRandomness(TestStringForValue(uint8(0xAA), uint8(0x55)))
+		r := NewRandomness(BetaValues(uint8(0xAA), uint8(0x55)))
 
 		// Request 5 bits (should read from first byte)
 		bits, err := r.Bits(5)

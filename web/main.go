@@ -3,10 +3,8 @@
 package main
 
 import (
-	"encoding/hex"
 	"fmt"
 	"runtime"
-	"strings"
 	"syscall/js"
 
 	"github.com/revision-3/randomness"
@@ -18,7 +16,7 @@ type RandomnessWrapper struct {
 }
 
 // NewRandomnessWrapper creates a new RandomnessWrapper
-func NewRandomnessWrapper(entropy string) *RandomnessWrapper {
+func NewRandomnessWrapper(entropy randomness.BetaBytes) *RandomnessWrapper {
 	return &RandomnessWrapper{
 		r: randomness.NewRandomness(entropy),
 	}
@@ -166,7 +164,7 @@ func NewRandomness(this js.Value, args []js.Value) any {
 	}
 
 	hexEntropy := args[0].String()
-	entropy, err := decodeHexSeed(hexEntropy)
+	entropy, err := randomness.BetaBytesFromHex(hexEntropy)
 	if err != nil {
 		return js.ValueOf(ErrResult(fmt.Sprintf("error: invalid hex string: %v", err)))
 	}
@@ -413,19 +411,6 @@ func NewRandomness(this js.Value, args []js.Value) any {
 	})
 
 	return ValueOf(lib)
-}
-
-func decodeHexSeed(hexSeed string) (string, error) {
-	// Remove any whitespace
-	hexSeed = strings.TrimSpace(hexSeed)
-
-	// Decode hex string to bytes
-	bytes, err := hex.DecodeString(hexSeed)
-	if err != nil {
-		return "", fmt.Errorf("invalid hex seed: %w", err)
-	}
-
-	return string(bytes), nil
 }
 
 func main() {

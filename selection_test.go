@@ -44,7 +44,7 @@ func TestSelectWeightedWithSupply(t *testing.T) {
 			&testItem{value: 2, weight: 1.0, supply: 1}, // Should have 1/4 chance
 		}
 
-		r := NewRandomness(TestStringForValue(uint64(math.MaxUint64 / uint64(iterations) * uint64(i))))
+		r := NewRandomness(BetaValues(uint64(math.MaxUint64 / uint64(iterations) * uint64(i))))
 		results, err := r.Selection(SelectionConfig{Items: items, Count: 1})
 		if err != nil {
 			t.Fatalf("Selection() error = %v", err)
@@ -82,7 +82,7 @@ func TestSelectInstances(t *testing.T) {
 		}
 
 		// Create a single randomness instance for the test
-		r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+		r := NewRandomness(BetaValues(GenerateTestRandomValue()))
 
 		// Create a single SelectionConfig for the test
 		config := SelectionConfig{Items: items, Count: 1}
@@ -133,7 +133,7 @@ func TestSelectInstances(t *testing.T) {
 		}
 
 		// Create a single randomness instance for the test
-		r := NewRandomness(TestStringForValue(GenerateTestRandomValue()))
+		r := NewRandomness(BetaValues(GenerateTestRandomValue()))
 
 		// Create a single SelectionConfig for the test
 		config := SelectionConfig{Items: items, Count: 1}
@@ -192,7 +192,7 @@ func TestSelectInstances(t *testing.T) {
 		}
 
 		// Select all instances
-		r := NewRandomness("test")
+		r := NewRandomness(BetaBytes("test"))
 		results, err := r.Selection(SelectionConfig{Items: items, Count: 4})
 		if err != nil {
 			t.Fatalf("Selection() error = %v", err)
@@ -232,7 +232,7 @@ func TestResetSelection(t *testing.T) {
 	}
 
 	// Select some instances
-	r := NewRandomness("test")
+	r := NewRandomness(BetaBytes("test"))
 	c := SelectionConfig{Items: items, Count: 5}
 	results, err := r.Selection(c)
 	if err != nil {

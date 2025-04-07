@@ -38,7 +38,8 @@ const seed = Array.from(array)
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
 
-// Create the Randomness instance
+// Create the Randomness instance with the hex string
+// The hex string will be automatically converted to BetaBytes
 const result = Randomness(seed);
 if (result.err) {
     console.error("Error creating Randomness instance:", result.err);
@@ -46,6 +47,8 @@ if (result.err) {
 }
 const randomness = result;
 ```
+
+Note: The entropy string must be a valid hex string. The Randomness constructor will automatically convert it to BetaBytes.
 
 ## Available Methods
 

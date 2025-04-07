@@ -8,7 +8,6 @@ import (
 	"math"
 	"math/big"
 	"slices"
-	"strconv"
 )
 
 // Randomness provides numbers from a source of randomness.
@@ -83,7 +82,7 @@ type randomness struct {
 var _ Randomness = (*randomness)(nil)
 
 // NewRandomness creates a new Randomness instance from a random string.
-func NewRandomness(β string) Randomness {
+func NewRandomness(β BetaBytes) Randomness {
 	return &randomness{
 		data:        []byte(β),
 		pos:         0,
@@ -278,57 +277,6 @@ func numbersNeeds(count, magnitude int) (bitsPerNumber, bytesNeeded int, err err
 	bitsNeeded := bitsPerNumber * (count + 1)
 	bytesNeeded = int(math.Ceil(float64(bitsNeeded) / 8))
 	return bitsPerNumber, bytesNeeded, nil
-}
-
-// TestStringForValue returns a string representing the given values when used
-// by NewRandomness and decoded. It's designed to be used for unit testing.
-func TestStringForValue(vals ...any) string {
-	if len(vals) == 0 {
-		panic("no values provided to TestStringForValue")
-	}
-
-	var buf []byte
-
-	var addVal func(val any)
-	addVal = func(val any) {
-		if val == nil {
-			panic("nil value provided to TestStringForValue")
-		}
-		switch v := val.(type) {
-		case uint64:
-			tmp := make([]byte, 8)
-			binary.BigEndian.PutUint64(tmp, v)
-			buf = append(buf, tmp...)
-		case uint32:
-			tmp := make([]byte, 4)
-			binary.BigEndian.PutUint32(tmp, v)
-			buf = append(buf, tmp...)
-		case uint16:
-			tmp := make([]byte, 2)
-			binary.BigEndian.PutUint16(tmp, v)
-			buf = append(buf, tmp...)
-		case uint8:
-			buf = append(buf, v)
-		case int64:
-			addVal(uint64(v))
-		case int32:
-			addVal(uint32(v))
-		case int:
-			if strconv.IntSize == 64 {
-				addVal(uint64(v))
-			} else {
-				addVal(uint32(v))
-			}
-		default:
-			panic(fmt.Sprintf("unsupported value type: %T", val))
-		}
-	}
-
-	for _, v := range vals {
-		addVal(v)
-	}
-
-	return string(buf)
 }
 
 var bigMaxUint64 = big.NewFloat(float64(math.MaxUint64))
