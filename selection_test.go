@@ -26,6 +26,10 @@ func (i *testItem) Use() {
 	i.supply--
 }
 
+func (i *testItem) Any() any {
+	return i
+}
+
 func abs(x int) int {
 	if x < 0 {
 		return -x
