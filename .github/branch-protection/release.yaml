@@ -29,6 +29,12 @@ rules:
       required_status_checks:
         - context: "Analyze (go)"
           integration_id: 15368
+  - type: "commit_message_pattern"
+    parameters:
+      operator: "regex"
+      pattern: "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\\([a-z0-9-]+\\))?: .*"
+      negate: false
+      name: "Must follow conventional commits format"
 bypass_actors:
   - actor_id: null
     actor_type: "EnterpriseOwner"

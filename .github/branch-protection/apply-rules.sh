@@ -108,6 +108,42 @@ get_precedence() {
     yq -r '.precedence // 999' "$file"
 }
 
+# Function to get our managed ruleset names
+get_managed_ruleset_names() {
+    local -a names
+    for file in "$SCRIPT_DIR"/*.yaml; do
+        if [ -f "$file" ]; then
+            names+=("$(yq -r '.name' "$file")")
+        fi
+    done
+    echo "${names[@]}"
+}
+
+# Function to delete only our managed rulesets
+delete_managed_rulesets() {
+    local -a managed_names
+    read -ra managed_names <<< "$(get_managed_ruleset_names)"
+    
+    local ruleset_list
+    ruleset_list=$(get_ruleset_list)
+    
+    while IFS=$'\t' read -r id name _ _ _; do
+        if [[ $id =~ ^[0-9]+$ ]]; then
+            # Check if this is one of our managed rulesets
+            for managed_name in "${managed_names[@]}"; do
+                if [ "$name" = "$managed_name" ]; then
+                    echo "Deleting managed ruleset $id ($name)..."
+                    gh api --method DELETE \
+                        -H "Accept: application/vnd.github+json" \
+                        -H "X-GitHub-Api-Version: 2022-11-28" \
+                        "/repos/$REPO/rulesets/$id" || handle_error "Failed to delete ruleset"
+                    break
+                fi
+            done
+        fi
+    done <<< "$ruleset_list"
+}
+
 # Function to reorder rulesets
 reorder_rulesets() {
     local ruleset_list
@@ -115,16 +151,8 @@ reorder_rulesets() {
     echo "Current rulesets:"
     echo "$ruleset_list"
     
-    # Delete all existing rulesets
-    while IFS=$'\t' read -r id name _ _ _; do
-        if [[ $id =~ ^[0-9]+$ ]]; then
-            echo "Deleting ruleset $id ($name)..."
-            gh api --method DELETE \
-                -H "Accept: application/vnd.github+json" \
-                -H "X-GitHub-Api-Version: 2022-11-28" \
-                "/repos/$REPO/rulesets/$id" || handle_error "Failed to delete ruleset"
-        fi
-    done <<< "$ruleset_list"
+    # Delete only our managed rulesets
+    delete_managed_rulesets
     
     # Get all YAML files and sort by precedence
     local -a yaml_files
