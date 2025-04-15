@@ -3,16 +3,18 @@ on:
   push:
     branches:
       - release
-  pull_request:
-    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
+          release-type: simple
           package-name: randomness
           changelog-types: '{"feat":"Features","fix":"Bug Fixes","docs":"Documentation","style":"Code Style","refactor":"Code Refactoring","test":"Tests","chore":"Chores","ci":"CI","perf":"Performance","revert":"Reverts"}' 
