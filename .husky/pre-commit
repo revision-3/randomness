@@ -1,0 +1,23 @@
+# Function to handle errors
+handle_error() {
+    echo "Error: $1"
+    exit 1
+}
+
+# Check if Husky is initialized
+if [ ! -f "$(dirname -- "$0")/commit-msg" ]; then
+    handle_error "Husky is not initialized. Please run 'npm install' to set up Git hooks before committing."
+fi
+
+# Get the current branch name
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+# Check if we're on the release branch
+if [[ "$BRANCH_NAME" == "release" ]]; then
+    handle_error "Direct commits to the release branch are not allowed. Please create a pull request instead."
+fi
+
+# Check if we're on a branch with an allowed pattern
+if ! [[ "$BRANCH_NAME" =~ ^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)/ ]]; then
+    handle_error "Branch name '$BRANCH_NAME' is not allowed. Branch names must follow the pattern: type/* where type is one of: feat, fix, docs, style, refactor, test, chore, ci, perf, revert"
+fi 

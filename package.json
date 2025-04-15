@@ -1,0 +1,15 @@
+{
+  "name": "randomness",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "release": "release-please release-pr --package-name=randomness"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.1",
+    "husky": "^9.0.11",
+    "release-please": "^17.0.0"
+  }
+} 

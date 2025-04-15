@@ -1,6 +1,9 @@
 .*
 !.gitignore
 !.github
+!.husky
+
+node_modules/
 
 # WebAssembly files
 *.wasm

@@ -158,9 +158,9 @@ This package is licensed solely to be used for the purpose of verifying the fair
 
 All releases are signed with GPG. To verify a release:
 
-1. Import the public key:
+1. Import the public key from a keyserver:
    ```bash
-   gpg --import pubkey.asc
+   gpg --recv-keys 76B5D604BF678DB4
    ```
 
 2. Verify a file's signature:
@@ -168,4 +168,9 @@ All releases are signed with GPG. To verify a release:
    gpg --verify file.asc file
    ```
 
-The public key used for signing releases is available in `pubkey.asc` in this repository. 
+The public key is also available in `pubkey.asc` in this repository as a backup method. You can import it using:
+`gpg --import pubkey.asc` if needed.
+
+## Development
+
+For information about the development process, including commit guidelines, branch protection rules, and release procedures, please see [RELEASING.md](RELEASING.md). 

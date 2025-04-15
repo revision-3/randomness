@@ -15,9 +15,4 @@ clean:
 
 # Release a new version
 release:
-	@new_version=$$(./contrib/version.sh) && \
-	git add version.go && \
-	git commit -m "Release $$new_version" && \
-	git tag $$new_version && \
-	git push origin main && \
-	git push origin $$new_version 
+	./scripts/release.sh 
