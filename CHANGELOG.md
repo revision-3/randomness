@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/revision-3/randomness/compare/v1.2.0...v1.2.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* make wasm build work again with new itemer interface ([#9](https://github.com/revision-3/randomness/issues/9)) ([54f0cae](https://github.com/revision-3/randomness/commit/54f0caebd0f6165bb457f37cb6d047772e7d22d9))
+
 ## [1.2.0](https://github.com/revision-3/randomness/compare/v1.1.0...v1.2.0) (2025-04-15)
 
 
