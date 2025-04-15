@@ -15,14 +15,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           package-name: randomness
-          changelog-types: |
-            feat: Features
-            fix: Bug Fixes
-            docs: Documentation
-            style: Code Style
-            refactor: Code Refactoring
-            test: Tests
-            chore: Chores
-            ci: CI
-            perf: Performance
-            revert: Reverts 
+          changelog-types: '{"feat":"Features","fix":"Bug Fixes","docs":"Documentation","style":"Code Style","refactor":"Code Refactoring","test":"Tests","chore":"Chores","ci":"CI","perf":"Performance","revert":"Reverts"}' 
