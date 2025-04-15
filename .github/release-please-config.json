@@ -1,5 +1,5 @@
 {
-  "release-type": "simple",
+  "release-type": "go",
   "changelog-sections": [
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
@@ -11,5 +11,8 @@
     { "type": "ci", "section": "CI" },
     { "type": "perf", "section": "Performance" },
     { "type": "revert", "section": "Reverts" }
-  ]
+  ],
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "version-prefix": "v"
 } 
