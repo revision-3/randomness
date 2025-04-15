@@ -1,0 +1,13 @@
+precedence: 2
+name: "release-please"
+target: "branch"
+source_type: "Repository"
+source: "{{REPO}}"
+enforcement: "active"
+conditions:
+  ref_name:
+    exclude: []
+    include:
+      - "refs/heads/release-please-*"
+rules: []
+bypass_actors: [] 
