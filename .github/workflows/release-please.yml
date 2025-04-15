@@ -13,10 +13,6 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - uses: googleapis/release-please-action@v4
         id: release
         with:
@@ -25,14 +21,17 @@ jobs:
           target-branch: release
           config-file: .github/release-please-config.json
 
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Update version.go
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.version }}
         run: |
           # Checkout the release-please branch
           git fetch origin release-please--branches--release
           git checkout release-please--branches--release
-          # Remove 'v' prefix from version
-          VERSION=${steps.release.outputs.tag_name#v}
+          VERSION=${steps.release.outputs.version}
           # Update version.go
           sed -i "s/const Version = \".*\"/const Version = \"v${VERSION}\"/" version.go
           # Configure git
