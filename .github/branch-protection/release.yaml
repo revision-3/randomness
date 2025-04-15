@@ -21,9 +21,7 @@ rules:
       required_review_thread_resolution: true
       automatic_copilot_code_review_enabled: true
       allowed_merge_methods:
-        - "merge"
         - "squash"
-        - "rebase"
   - type: "required_status_checks"
     parameters:
       strict_required_status_checks_policy: true
