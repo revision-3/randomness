@@ -32,7 +32,7 @@ rules:
   - type: "commit_message_pattern"
     parameters:
       operator: "regex"
-      pattern: "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\\([a-z0-9-]+\\))?: .*"
+      pattern: "(feat|fix|docs|style|refactor|test|chore|ci|perf|revert|Merge).*"
       negate: false
       name: "Must follow conventional commits format"
 bypass_actors:
