@@ -344,13 +344,11 @@ func NewRandomness(this js.Value, args []js.Value) any {
 		for i := 0; i < itemsArg.Length(); i++ {
 			item := itemsArg.Index(i)
 			if item.Truthy() {
-				genericItem := randomness.GenericItem[string]{
-					BaseItem: randomness.NewBaseItem(
-						panicSafe(func() float64 { return item.Get("weight").Float() }, 1.0),
-						panicSafe(func() int { return item.Get("supply").Int() }, -1),
-					),
-					Value: item.Get("value").String(),
-				}
+				genericItem := randomness.NewGenericItem(item.Get("value").String(),
+					panicSafe(func() float64 { return item.Get("weight").Float() }, 1.0),
+					panicSafe(func() int { return item.Get("supply").Int() }, -1),
+				)
+
 				items[i] = genericItem
 			}
 		}
@@ -362,9 +360,13 @@ func NewRandomness(this js.Value, args []js.Value) any {
 			}
 			jsResults := make([]any, len(results))
 			for i, result := range results {
-				item := result.Get().(randomness.GenericItem[string])
+
+				item, ok := result.Get().(randomness.Itemer)
+				if !ok {
+					return ErrResult("error: result is not an Itemer")
+				}
 				jsResults[i] = map[string]any{
-					"value":    item.Value,
+					"value":    item.Any(),
 					"weight":   result.Weight(),
 					"supply":   result.Supply(),
 					"instance": result.Instance(),
