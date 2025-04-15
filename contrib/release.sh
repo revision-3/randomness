@@ -58,18 +58,4 @@ $(cat checksums.txt)
 EOF
 
 # Output release info for GitHub Actions
-echo "::set-output name=release_dir::$RELEASE_DIR"
-
-# Get the new version
-new_version=$(./contrib/version.sh)
-
-# Add version.go to git
-git add version.go
-
-# Create commit and tag
-git commit -m "Release $new_version"
-git tag $new_version
-
-# Push changes
-git push origin main
-git push origin $new_version 
+echo "release_dir=$RELEASE_DIR" >> $GITHUB_OUTPUT 
