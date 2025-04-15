@@ -1,0 +1,25 @@
+precedence: 1
+name: "branch-naming"
+target: "branch"
+source_type: "Repository"
+source: "{{REPO}}"
+enforcement: "active"
+conditions:
+  ref_name:
+    exclude:
+      - "refs/heads/feat/*"
+      - "refs/heads/fix/*"
+      - "refs/heads/docs/*"
+      - "refs/heads/style/*"
+      - "refs/heads/refactor/*"
+      - "refs/heads/test/*"
+      - "refs/heads/chore/*"
+      - "refs/heads/ci/*"
+      - "refs/heads/perf/*"
+      - "refs/heads/revert/*"
+      - "refs/heads/release"
+    include:
+      - "refs/heads/*"
+rules:
+  - type: "creation"
+bypass_actors: [] 

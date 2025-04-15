@@ -1,0 +1,28 @@
+name: release-please
+on:
+  push:
+    branches:
+      - release
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: randomness
+          changelog-types: |
+            feat: Features
+            fix: Bug Fixes
+            docs: Documentation
+            style: Code Style
+            refactor: Code Refactoring
+            test: Tests
+            chore: Chores
+            ci: CI
+            perf: Performance
+            revert: Reverts 

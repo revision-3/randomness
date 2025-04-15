@@ -1,0 +1,44 @@
+precedence: 2
+name: "conventional-commits"
+target: "branch"
+source_type: "Repository"
+source: "{{REPO}}"
+enforcement: "active"
+conditions:
+  ref_name:
+    exclude: []
+    include:
+      - "refs/heads/feat/*"
+      - "refs/heads/fix/*"
+      - "refs/heads/docs/*"
+      - "refs/heads/style/*"
+      - "refs/heads/refactor/*"
+      - "refs/heads/test/*"
+      - "refs/heads/chore/*"
+      - "refs/heads/ci/*"
+      - "refs/heads/perf/*"
+      - "refs/heads/revert/*"
+rules:
+  - type: "non_fast_forward"
+  - type: "pull_request"
+    parameters:
+      required_approving_review_count: 1
+      dismiss_stale_reviews_on_push: true
+      require_code_owner_review: false
+      require_last_push_approval: false
+      required_review_thread_resolution: true
+      automatic_copilot_code_review_enabled: true
+      allowed_merge_methods:
+        - "merge"
+        - "squash"
+        - "rebase"
+  - type: "commit_message_pattern"
+    parameters:
+      operator: "regex"
+      pattern: |
+        ^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\([a-z0-9-]+\))?: .{1,100}
+        
+        (.*)?$
+      negate: false
+      name: "Must follow conventional commits format"
+bypass_actors: [] 
