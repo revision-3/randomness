@@ -1,3 +1,3 @@
 module github.com/revision-3/randomness
 
-go 1.24.1
+go 1.24.2
