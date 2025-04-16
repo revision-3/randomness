@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.4](https://github.com/revision-3/randomness/compare/v1.2.3...v1.2.4) (2025-04-16)
+
+
+### Bug Fixes
+
+* another attempt at getting the version right ([#22](https://github.com/revision-3/randomness/issues/22)) ([05d7c49](https://github.com/revision-3/randomness/commit/05d7c490a3404da9648466c45d4f86a17d1aff85))
+* update release-please config and add version marker comment ([#20](https://github.com/revision-3/randomness/issues/20)) ([871cb35](https://github.com/revision-3/randomness/commit/871cb35457f2ff9d0047c2f928a9cf3f00ec2827))
+
 ## [1.2.3](https://github.com/revision-3/randomness/compare/v1.2.2...v1.2.3) (2025-04-16)
 
 
