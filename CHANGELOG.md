@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/revision-3/randomness/compare/v1.2.2...v1.2.3) (2025-04-16)
+
+
+### Bug Fixes
+
+* release version, second try ([#18](https://github.com/revision-3/randomness/issues/18)) ([3c96531](https://github.com/revision-3/randomness/commit/3c965310ca70cb9490322d695196e42461accbe7))
+
 ## [1.2.2](https://github.com/revision-3/randomness/compare/v1.2.1...v1.2.2) (2025-04-16)
 
 
