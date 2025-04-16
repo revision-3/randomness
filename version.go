@@ -2,4 +2,4 @@ package randomness
 
 const Name = "randomness"
 // x-release-please-version
-const Version = "v1.0.5"
+const Version = "1.0.5"
