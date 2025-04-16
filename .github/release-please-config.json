@@ -17,7 +17,10 @@
   "packages": {
     ".": {
       "extra-files": [
-        "version.go"
+        {
+          "type": "generic",
+          "path": "version.go"
+        }
       ]
     }
   },
