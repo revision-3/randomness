@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/revision-3/randomness/compare/v1.2.1...v1.2.2) (2025-04-16)
+
+
+### Bug Fixes
+
+* release version ([#16](https://github.com/revision-3/randomness/issues/16)) ([be5f533](https://github.com/revision-3/randomness/commit/be5f5337117a82068331b23b77deaa5052b214ee))
+* wasm itemer versioning ([#14](https://github.com/revision-3/randomness/issues/14)) ([05afdfe](https://github.com/revision-3/randomness/commit/05afdfe6f00193037d8041be75239eaaaac0a7c3))
+
 ## [1.2.1](https://github.com/revision-3/randomness/compare/v1.2.0...v1.2.1) (2025-04-15)
 
 
