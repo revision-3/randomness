@@ -7,16 +7,11 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - uses: googleapis/release-please-action@v4
         id: release
         with:
@@ -24,25 +19,3 @@ jobs:
           release-type: simple
           target-branch: release
           config-file: .github/release-please-config.json
-
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Update version.go
-        if: ${{ steps.release.outputs.version }}
-        run: |
-          # Checkout the release-please branch
-          git fetch origin release-please--branches--release
-          git checkout release-please--branches--release
-          VERSION=${steps.release.outputs.version}
-          # Update version.go
-          sed -i "s/const Version = \".*\"/const Version = \"v${VERSION}\"/" version.go
-          # Configure git
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          # Add and commit changes
-          git add version.go
-          git commit -m "chore: update version.go to ${steps.release.outputs.tag_name}"
-          # Push changes to release-please branch
-          git push origin release-please--branches--release 
