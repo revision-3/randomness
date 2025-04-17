@@ -1,8 +1,8 @@
-name: release-please-main
+name: release-please-tag
 on:
   push:
     branches:
-      - main
+      - release
 
 permissions:
   contents: write
@@ -15,12 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Run release-please
+      - name: Run release-please for tagging
         uses: revision-3/release-please-action@v4.2.3
         id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: go
-          target-branch: release
           config-file: .github/release-please-config.json
-          skip-github-release: true

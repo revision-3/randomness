@@ -18,6 +18,8 @@ conditions:
       - "refs/heads/perf/*"
       - "refs/heads/revert/*"
       - "refs/heads/release"
+      - "refs/heads/release-please-*"
+      - "refs/heads/main"
     include:
       - "refs/heads/*"
 rules:
